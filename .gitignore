@@ -1,0 +1,8 @@
+.deviceconfig
+.submodconfig
+sdkconfig.old
+__pycache__
+build
+docs
+*.pyc
+.DS_Store

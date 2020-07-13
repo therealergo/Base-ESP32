@@ -1,0 +1,20 @@
+{
+    "configurations": [
+        {
+            "name": "C/CPP Configured",
+            "defines": [
+            ],
+            "includePath": [
+                "${workspaceFolder}/components/**", 
+                "${workspaceFolder}/libraries/**", 
+                "${workspaceFolder}/tools/**"
+            ],
+            "forcedInclude": [
+                "${workspaceFolder}/.vscode/sdkconfig.h"
+            ],
+            "cStandard": "c11",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}
