@@ -6,3 +6,9 @@ build
 docs
 *.pyc
 .DS_Store
+
+# Over-size zip file handling
+.zipconfig
+tools/linux64/doxygen/doxygen
+tools/macos/doxygen/Frameworks/libclang.dylib
+tools/macos/doxygen/Resources/doxygen

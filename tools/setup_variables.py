@@ -1,5 +1,6 @@
 import os
 import sys
+import zipfile
 import platform
 
 # Tell ESP-IDF that we're targetting esp32
@@ -15,6 +16,19 @@ if not os.path.isfile('.submodconfig'):
         f.close()
     else:
         sys.exit(result)
+
+# Initialize all over-size zipped files on first startup
+if not os.path.isfile('.zipconfig'):
+    print('Performing first-time large file unzipping...')
+    with zipfile.ZipFile("tools/linux64/doxygen/doxygen.zip","r") as zip_ref:
+        zip_ref.extractall("tools/linux64/doxygen")
+    with zipfile.ZipFile("tools/macos/doxygen/Frameworks/libclang.dylib.zip","r") as zip_ref:
+        zip_ref.extractall("tools/macos/doxygen/Frameworks")
+    with zipfile.ZipFile("tools/macos/doxygen/Resources/doxygen.zip","r") as zip_ref:
+        zip_ref.extractall("tools/macos/doxygen/Resources")
+    f = open('.zipconfig', 'w')
+    f.write('large file unzip completion marker')
+    f.close()
 
 # Read the device's serial port and baud rate from the config file
 CONFIG_FILE = '.deviceconfig'
