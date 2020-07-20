@@ -1,10 +1,19 @@
-# SaucyBytes ESP32 Base
+# SaucyBytes ESP32 Base <!-- From ESP32-Base, CHANGE for an actual project README -->
 
-## Overview
+## Overview <!-- From ESP32-Base, CHANGE for an actual project README -->
 
-This repository holds a base all-in-one build setup for ESP32. Included are the tools required for VS Code compilation, upload and flashing the ESP32. To get this project running on your machine follow the steps below.
+This repository holds a base all-in-one build setup for ESP32. Included are the tools required for VS Code compilation, upload and flashing the ESP32.
 
-## VS Code environment setup
+## Creating an ESP32-Based project <!-- From ESP32-Base, REMOVE for an actual project README -->
+
+The easiest way to create a new ESP32 project is by importing this repository. This can be done with the following steps:
+1. Create a new git repository (in the correct organization) using GitHub's green **New**  button on the organization page.
+2. Put in a reasonable name under **Repository name** (and maybe a description in the next box), then hit **Create repository**.
+3. In the bottom-left of the page, hit the **Import code** button.
+4. Now, paste in this git link ```https://github.com/SaucyBytes/SB-Base-ESP32.git``` under **Your old repository’s clone URL**.
+5. Hit **Begin import**. At this point, you may have to input your GitHub credentials. When this is done, your development git repository is ready to use.
+
+## VS Code environment setup <!-- From ESP32-Base, DONT CHANGE for an actual project README -->
 
 1. Download the prerequisites:
     1. VS Code editor from their [downloads page](https://code.visualstudio.com/download).
@@ -31,3 +40,12 @@ This repository holds a base all-in-one build setup for ESP32. Included are the 
 12. Repeat Step 8 to open the build tasks menu again. This time press *Flash*.
 
 Your ESP32 should now be flashed with the firmware!
+
+## Merging ESP32 Base changes <!-- From ESP32-Base, DONT CHANGE for an actual project README -->
+
+From time to time, improvements may be made to the ESP32 project base. To bring those changes into your existing project (on the master branch), take the following steps:
+1. Run the following command: ```git pull https://github.com/SaucyBytes/SB-Base-ESP32.git master```
+2. If there are any CONFLICT's listed, merge the changes together. This should be uncommon, but you'll have to use your brain to ensure the result is correct.
+3. If a merge was necessary, run ```git commit``` to finish the merge.
+4. Test your tools to ensure that everything is working as intended.
+5. Now run ```git push``` to actully push your changes to GitHub.
