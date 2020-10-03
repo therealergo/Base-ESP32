@@ -2,3 +2,5 @@
 	path = tools/esp-idf
 	url = https://github.com/espressif/esp-idf.git
 	branch = release/v4.0
+[submodule "Submod"]
+	branch = release/v4.2
