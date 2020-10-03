@@ -10,7 +10,7 @@ os.environ['IDF_TARGET'] = 'esp32'
 if not os.path.isfile('.submodconfig'):
     print('Performing first-time git submodule initialization...')
     result = os.system('git submodule update --init --recursive')
-    if result is 0:
+    if result == 0:
         f = open('.submodconfig', 'w')
         f.write('submodule update completion marker')
         f.close()

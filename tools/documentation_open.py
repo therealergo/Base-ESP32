@@ -6,7 +6,7 @@ import setup_variables
 # If there's no documentation, build it for the first time
 if not os.path.isdir("./docs"):
     result = os.system("python " + os.path.join(".", "tools", "documentation_update.py"))
-    if not result is 0:
+    if not result == 0:
         sys.exit(result)
 
 # Select documentation main page based on what's availible (with 'annotated' page as default)

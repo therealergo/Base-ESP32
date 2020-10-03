@@ -15,7 +15,7 @@ if len(sys.argv) == 2:
     result = os.system('cmake -S. -Bbuild -GNinja')
 
     # Perform a normal build if build files were successfully generated
-    if result is 0:
+    if result == 0:
         sys.exit(os.system('cmake --build build --target ' + sys.argv[1]))
 
     # Pass the exit code back to the system if it was a failure

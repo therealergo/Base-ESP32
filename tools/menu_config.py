@@ -13,7 +13,7 @@ result = os.system('python ./tools/build_target.py menuconfig')
 # Copy generated 'sdkconfig' file into '.vscode' directory
 # This lets VS Code load in the sdkconfig defines properly
 # Note that any run to MenuConfig will regenerate this file
-if result is 0:
+if result == 0:
     shutil.copy('./build/config/sdkconfig.h', './.vscode')
 else:
     sys.exit(result)
