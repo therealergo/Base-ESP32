@@ -45,17 +45,33 @@ except (IOError, IndexError):
 # Setup IDF_PATH variable for building
 os.environ['IDF_PATH'] = os.path.abspath('./tools/esp-idf')
 
+# Bootstrap any necessary Python dependencies on first startup
+if not os.path.isfile('.pythonconfig'):
+
+    # Ensure that we have a working pip
+    print('Testing pip installation...')
+    result = os.system('pip --version')
+    if not result == 0:
+        result = os.system('curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py')
+        if not result == 0:
+            raise IOError('Unable to download pip installer!')
+        result = os.system('python get-pip.py')
+        if not result == 0:
+            raise EnvironmentError('Unable to run pip installer!')
+        os.remove('get-pip.py')
+    
+    # Tell pip to install all of ESP-IDF's requirements
+    result = os.system('pip install -r ./tools/esp-idf/requirements.txt --user')
+    if not result == 0:
+        raise EnvironmentError('ESP-IDF Python requirement installation failed!')
+    
+    # Tell the system that first-time Python setup completed successfully
+    f = open('.pythonconfig', 'w')
+    f.write('python setup completion marker')
+    f.close()
+
 # Get a string that identifies the current OS
 platformIdentifier = platform.system().lower()
-
-# Add python dependencies to current process's path, PATH, and PYTHONPATH
-pythonToolsDir = os.path.abspath('./tools/python')
-sys.path.insert(0, pythonToolsDir)
-os.environ['PATH'] = pythonToolsDir + os.pathsep + os.environ['PATH']
-if "PYTHONPATH" in os.environ:
-    os.environ['PYTHONPATH'] = pythonToolsDir + os.pathsep + os.environ['PYTHONPATH']
-else:
-    os.environ['PYTHONPATH'] = pythonToolsDir
 
 # Setup os-specific PATH variable for building
 if platformIdentifier.startswith('win'):
