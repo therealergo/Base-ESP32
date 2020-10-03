@@ -61,6 +61,7 @@ if not os.path.isfile('.pythonconfig'):
         os.remove('get-pip.py')
     
     # Tell pip to install all of ESP-IDF's requirements
+    print('Installing necessary Python requirements...')
     result = os.system('pip install -r ./tools/esp-idf/requirements.txt --user')
     if not result == 0:
         raise EnvironmentError('ESP-IDF Python requirement installation failed!')
