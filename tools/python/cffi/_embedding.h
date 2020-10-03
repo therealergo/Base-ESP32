@@ -224,7 +224,7 @@ static int _cffi_initialize_python(void)
 
         if (f != NULL && f != Py_None) {
             PyFile_WriteString("\nFrom: " _CFFI_MODULE_NAME
-                               "\ncompiled with cffi version: 1.12.3"
+                               "\ncompiled with cffi version: 1.14.2"
                                "\n_cffi_backend module: ", f);
             modules = PyImport_GetModuleDict();
             mod = PyDict_GetItemString(modules, "_cffi_backend");
@@ -246,7 +246,9 @@ static int _cffi_initialize_python(void)
     goto done;
 }
 
+#if PY_VERSION_HEX < 0x03080000
 PyAPI_DATA(char *) _PyParser_TokenNames[];  /* from CPython */
+#endif
 
 static int _cffi_carefully_make_gil(void)
 {
@@ -327,13 +329,15 @@ static int _cffi_carefully_make_gil(void)
 #endif
 
     /* call Py_InitializeEx() */
-    {
-        PyGILState_STATE state = PyGILState_UNLOCKED;
-        if (!Py_IsInitialized())
-            _cffi_py_initialize();
-        else
-            state = PyGILState_Ensure();
-
+    if (!Py_IsInitialized()) {
+        _cffi_py_initialize();
+        PyEval_InitThreads();
+        PyEval_SaveThread();  /* release the GIL */
+        /* the returned tstate must be the one that has been stored into the
+           autoTLSkey by _PyGILState_Init() called from Py_Initialize(). */
+    }
+    else {
+        PyGILState_STATE state = PyGILState_Ensure();
         PyEval_InitThreads();
         PyGILState_Release(state);
     }
@@ -359,11 +363,11 @@ PyMODINIT_FUNC _CFFI_PYTHON_STARTUP_FUNC(const void *[]);   /* forward */
 
 static struct _cffi_pypy_init_s {
     const char *name;
-    void (*func)(const void *[]);
+    void *func;    /* function pointer */
     const char *code;
 } _cffi_pypy_init = {
     _CFFI_MODULE_NAME,
-    (void(*)(const void *[]))_CFFI_PYTHON_STARTUP_FUNC,
+    _CFFI_PYTHON_STARTUP_FUNC,
     _CFFI_PYTHON_STARTUP_CODE,
 };
 

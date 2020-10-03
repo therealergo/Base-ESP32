@@ -52,20 +52,31 @@ def _consume_errors(lib):
     return errors
 
 
-def _openssl_assert(lib, ok):
-    if not ok:
-        errors = _consume_errors(lib)
-        errors_with_text = []
-        for err in errors:
-            buf = ffi.new("char[]", 256)
-            lib.ERR_error_string_n(err.code, buf, len(buf))
-            err_text_reason = ffi.string(buf)
+def _errors_with_text(errors):
+    errors_with_text = []
+    for err in errors:
+        buf = ffi.new("char[]", 256)
+        lib.ERR_error_string_n(err.code, buf, len(buf))
+        err_text_reason = ffi.string(buf)
 
-            errors_with_text.append(
-                _OpenSSLErrorWithText(
-                    err.code, err.lib, err.func, err.reason, err_text_reason
-                )
+        errors_with_text.append(
+            _OpenSSLErrorWithText(
+                err.code, err.lib, err.func, err.reason, err_text_reason
             )
+        )
+
+    return errors_with_text
+
+
+def _consume_errors_with_text(lib):
+    return _errors_with_text(_consume_errors(lib))
+
+
+def _openssl_assert(lib, ok, errors=None):
+    if not ok:
+        if errors is None:
+            errors = _consume_errors(lib)
+        errors_with_text = _errors_with_text(errors)
 
         raise InternalError(
             "Unknown OpenSSL error. This error is commonly encountered when "
@@ -75,7 +86,7 @@ def _openssl_assert(lib, ok):
             "please file an issue at https://github.com/pyca/cryptography/"
             "issues with information on how to reproduce "
             "this. ({0!r})".format(errors_with_text),
-            errors_with_text
+            errors_with_text,
         )
 
 
@@ -98,6 +109,7 @@ class Binding(object):
     """
     OpenSSL API wrapper.
     """
+
     lib = None
     ffi = ffi
     _lib_loaded = False
@@ -115,7 +127,7 @@ class Binding(object):
         # reliably clear the error queue. Once we clear it here we will
         # error on any subsequent unexpected item in the stack.
         cls.lib.ERR_clear_error()
-        if cls.lib.Cryptography_HAS_ENGINE:
+        if cls.lib.CRYPTOGRAPHY_NEEDS_OSRANDOM_ENGINE:
             result = cls.lib.Cryptography_add_osrandom_engine()
             _openssl_assert(cls.lib, result in (1, 2))
 
@@ -141,8 +153,10 @@ class Binding(object):
             # the setup for this.
             __import__("_ssl")
 
-            if (not cls.lib.Cryptography_HAS_LOCKING_CALLBACKS or
-                    cls.lib.CRYPTO_get_locking_callback() != cls.ffi.NULL):
+            if (
+                not cls.lib.Cryptography_HAS_LOCKING_CALLBACKS
+                or cls.lib.CRYPTO_get_locking_callback() != cls.ffi.NULL
+            ):
                 return
 
             # If nothing else has setup a locking callback already, we set up
@@ -153,14 +167,14 @@ class Binding(object):
 
 def _verify_openssl_version(lib):
     if (
-        lib.CRYPTOGRAPHY_OPENSSL_LESS_THAN_102 and
-        not lib.CRYPTOGRAPHY_IS_LIBRESSL
+        lib.CRYPTOGRAPHY_OPENSSL_LESS_THAN_110
+        and not lib.CRYPTOGRAPHY_IS_LIBRESSL
     ):
         warnings.warn(
-            "OpenSSL version 1.0.1 is no longer supported by the OpenSSL "
-            "project, please upgrade. A future version of cryptography will "
+            "OpenSSL version 1.0.2 is no longer supported by the OpenSSL "
+            "project, please upgrade. The next version of cryptography will "
             "drop support for it.",
-            utils.CryptographyDeprecationWarning
+            utils.CryptographyDeprecationWarning,
         )
 
 
