@@ -31,10 +31,8 @@ The easiest way to create a new ESP32 project is by importing this repository. T
 5. Navigate to the location you'd like the repository cloned into using ```cd path/to/desired/location```.
 6. Paste in the line copied in Step 3. The terminal may request you to login using your GitLab credentials. 
 7. Open up the VS Code application we downloaded in Step 1.
-8. Use the *Open folder...* option and navigate to the *Base-ESP32* folder you just cloned. Press *Open*. See image below.
-![Screenshot](Images/WhereToClickInVSCode.png)
+8. Use the *Open folder...* option and navigate to the *Base-ESP32* folder you just cloned. Press *Open*.
 9. Once the folder has opened, it is time to run the build tasks. Navigate to the *Terminal* tab in the menu bar. Select *Run Build Task...*.
-![Screenshot](Images/WhereToOpenBuildTasks.png)
 10. Use the arrow keys to select "Clean and Build" and give it a minute to compile all the code.
 11. Plug your ESP32 into your computer. 
 12. Repeat Step 8 to open the build tasks menu again. This time press *Flash*.
