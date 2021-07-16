@@ -79,17 +79,17 @@ if platformIdentifier.startswith('win'):
     os.environ['PATH'] = os.path.abspath('./tools/win64/cmake/3.13.4/bin')                      + os.pathsep + os.environ['PATH']
     os.environ['PATH'] = os.path.abspath('./tools/win64/ninja/1.9.0')                           + os.pathsep + os.environ['PATH']
     os.environ['PATH'] = os.path.abspath('./tools/win64/mconf/v4.6.0.0-idf-20190628')           + os.pathsep + os.environ['PATH']
-    os.environ['PATH'] = os.path.abspath('./tools/win64/xtensa-esp32-elf/esp-2019r2-8.2.0/bin') + os.pathsep + os.environ['PATH']
+    os.environ['PATH'] = os.path.abspath('./tools/win64/xtensa-esp32-elf/esp-2021r1-8.4.0/bin') + os.pathsep + os.environ['PATH']
     os.environ['PATH'] = os.path.abspath('./tools/win64/doxygen')                               + os.pathsep + os.environ['PATH']
 elif platformIdentifier.startswith('mac') or platformIdentifier.startswith('darwin'):
     os.environ['PATH'] = os.path.abspath('./tools/macos/cmake/3.13.4/bin')                      + os.pathsep + os.environ['PATH']
     os.environ['PATH'] = os.path.abspath('./tools/macos/ninja/1.9.0')                           + os.pathsep + os.environ['PATH']
-    os.environ['PATH'] = os.path.abspath('./tools/macos/xtensa-esp32-elf/esp-2019r2-8.2.0/bin') + os.pathsep + os.environ['PATH']
+    os.environ['PATH'] = os.path.abspath('./tools/macos/xtensa-esp32-elf/esp-2021r1-8.4.0/bin') + os.pathsep + os.environ['PATH']
     os.environ['PATH'] = os.path.abspath('./tools/macos/doxygen/Resources')                     + os.pathsep + os.environ['PATH']
 elif platformIdentifier.startswith('linux'):
     os.environ['PATH'] = os.path.abspath('./tools/linux64/cmake/3.13.4/bin')                      + os.pathsep + os.environ['PATH']
     os.environ['PATH'] = os.path.abspath('./tools/linux64/ninja/1.9.0')                           + os.pathsep + os.environ['PATH']
-    os.environ['PATH'] = os.path.abspath('./tools/linux64/xtensa-esp32-elf/esp-2019r2-8.2.0/bin') + os.pathsep + os.environ['PATH']
+    os.environ['PATH'] = os.path.abspath('./tools/linux64/xtensa-esp32-elf/esp-2021r1-8.4.0/bin') + os.pathsep + os.environ['PATH']
     os.environ['PATH'] = os.path.abspath('./tools/linux64/doxygen')                               + os.pathsep + os.environ['PATH']
 else:
     raise ValueError('Unable to determine host OS!')
